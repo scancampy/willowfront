@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //Global Variables
     let isPWA = true;  // Enables or disables the service worker and PWA
-    let isAJAX = true; // AJAX transitions. Requires local server or server
+    let isAJAX = false; // AJAX transitions. Requires local server or server
     var pwaName = "Appkit"; //Local Storage Names for PWA
     var pwaRemind = 1; //Days to re-remind to add to home
     var pwaNoCache = false; //Requires server and HTTPS/SSL. Will clear cache with each visit
@@ -18,8 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
     var pwaScope = "./";
     var pwaLocation = "./_service-worker.js";
 
+   
+
     //Place all your custom Javascript functions and plugin calls below this line
     function init_template(){
+       
         //Caching Global Variables
         var i, e, el; //https://www.w3schools.com/js/js_performance.asp
 
@@ -131,7 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if(singleSlider.length){
                 singleSlider.forEach(function(e){
                     var single = new Splide( '#'+e.id, {
-                        type:'loop',
+                        type:'slide',
+                        rewind: false,
                         autoplay:true,
                         interval:4000,
                         perPage: 1,

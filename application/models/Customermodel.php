@@ -72,6 +72,38 @@
         }       
     }
 
+    function insert_customer_event($data) {
+        $this->load->helper('string');
+        $this->load->helper('security');
+
+        // get latest id
+        $q = $this->db->get_where('setting', array('id' => 1));
+        $rq = $q->row();
+        $kode_customer = 'E'.str_pad($rq->last_customer_event_id + 1,6,"0", STR_PAD_LEFT );
+        $data['kode_customer'] = $kode_customer;
+
+        $salt = random_string('alnum', 10);
+        $password = do_hash(do_hash($data['password'].$salt,'md5'), 'md5');
+        $data['status_customer'] = 'active';
+        $data['email_customer'] = $data['email_customer'];
+        $data['salt'] = $salt;
+        $data['password'] = $password;
+
+        if($this->db->insert('mst_customer', $data)) {
+            $this->db->where('id', 1);
+            $this->db->update('setting', array('last_customer_event_id' => $rq->last_customer_event_id + 1));
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function getKota() {
+        $q = $this->db->get('wilayah_kabupaten');
+        return $q->result();
+    }
+
     function activated($hp, $email, $pass) {
         $this->load->helper('string');
         $this->load->helper('security');
@@ -113,8 +145,8 @@
         if($q->num_rows() > 0) {
             $hq = $q->row();
             $salt = $hq->salt;
-
             $password = do_hash(do_hash($pass.$salt,'md5'), 'md5');
+            
             if($password == $hq->password) {                
                 // create token
                 $kode = $this->db->get_where('token', array('kode_customer' => $hq->kode_customer));
