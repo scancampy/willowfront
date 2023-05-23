@@ -26,6 +26,7 @@ class Dashboard extends CI_Controller {
 		
 		$data['master_path'] = $this->config->item('master_url');
 		$data['events'] = $this->eventmodel->getAllEvent('', array('is_aktif' => 1));
+		$data['unreadvoucher'] = $this->eventmodel->getUnreadVoucher(get_cookie('kode'));
 
 		if($this->session->flashdata('error_qr')) {
 			$data['js'] .= "

@@ -5,12 +5,14 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
-<title>Willow Baby & Kids</title>
+<title>Willow Baby & Kids Event</title>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url('styles/bootstrap.css'); ?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('plugins/slideunlock/iphone.theme.css'); ?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('plugins/slideunlock/slideToUnlock.css'); ?>">
 <link rel="stylesheet" type="text/css" href="<?php echo base_url('styles/style.css'); ?>">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="<?php echo base_url('fonts/css/fontawesome-all.min.css'); ?>">
-<link rel="manifest" href="_manifest.json" data-pwa-version="set_in_manifest_and_pwa_js">
+<link rel="manifest" href="<?php echo base_url('_manifest.json'); ?>" data-pwa-version="set_in_manifest_and_pwa_js">
 <link rel="apple-touch-icon" sizes="180x180" href="<?php echo base_url('app/icons/icon-192x192.png'); ?>">
 
 
@@ -32,8 +34,9 @@
 
     <div id="footer-bar" class="footer-bar-6">
 
-        <a href="<?php echo base_url('dashboard'); ?>" class="<?php if ($this->uri->segment(1) == "dashboard") { echo 'active-nav'; } ?>"><i class="fa fa-home"></i><span>Home</span></a>
-        <a href="<?php echo base_url('voucher'); ?>" class="<?php if ($this->uri->segment(1) == "voucher") { echo 'active-nav'; } ?>"><i class="fa fa-ticket-alt"></i><span>Voucher</span></a>
+        <a href="<?php echo base_url('dashboard'); ?>" class="<?php if ($this->uri->segment(1) == "dashboard" || $this->uri->segment(1) == "tenant"  || $this->uri->segment(1) == "event") { echo 'active-nav'; } ?>"><i class="fa fa-home"></i><span>Home</span></a>
+        <a href="<?php echo base_url('voucher'); ?>" class="<?php if ($this->uri->segment(1) == "voucher") { echo 'active-nav'; } ?>"><i class="fa fa-ticket-alt"></i><span>Voucher</span>
+            <?php if(@$unreadvoucher >0) { ?><em class="badge bg-highlight"><?php echo $unreadvoucher; ?></em><?php } ?></a>
         <a href="#" data-menu="menu-cookie-modal" id="btnscan" class="circle-nav "><i class="fa fa-qrcode"></i><span>Scan Now</span></a>
         <a href="<?php echo base_url('profile'); ?>" class="<?php if ($this->uri->segment(1) == "profile") { echo 'active-nav'; } ?>"><i class="fa fa-user"></i><span>Profile</span></a>
         <a href="#" data-menu="menu-main"><i class="fa fa-bars"></i><span>Menu</span></a>

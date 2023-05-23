@@ -3,7 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Event extends CI_Controller {
 
-	public function index()
+	public function __construct() {
+        parent::__construct();
+            // Your own constructor code
+        $this->load->helper('cookie');
+        if(!$this->customermodel->check_token(get_cookie('token'), get_cookie('kode'))) {
+            redirect('');
+        }
+    }
+    
+    public function index()
 	{	
         redirect('dashboard');
 	}
@@ -21,6 +30,7 @@ class Event extends CI_Controller {
 		$data['tenants'] = $this->eventmodel->getAllEventTenant($id);
 		$data['judul'] = 'Event Detail';
 		$data['master_path'] = $this->config->item('master_url');
+        $data['unreadvoucher'] = $this->eventmodel->getUnreadVoucher(get_cookie('kode'));
 
 		$data['js'] = "$('#btnscan').on('click', function() {
                 console.log('read');

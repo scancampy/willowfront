@@ -8,6 +8,32 @@ class Welcome extends CI_Controller {
 		if($this->customermodel->check_token(get_cookie('token'), get_cookie('kode'))) {
 			redirect('dashboard');
 		} 
+	}
+
+	private function _isValid() 
+	{
+	    try {
+
+	        $url = 'https://www.google.com/recaptcha/api/siteverify';
+	        $data = ['secret'   => '6Lev44gdAAAAAJ3Uwxp89-VVkKUiPp66i-ZYaI_3',
+	                 'response' => $_POST['g-recaptcha-response'],
+	                 'remoteip' => $_SERVER['REMOTE_ADDR']];
+	                 
+	        $options = [
+	            'http' => [
+	                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+	                'method'  => 'POST',
+	                'content' => http_build_query($data) 
+	            ]
+	        ];
+	    
+	        $context  = stream_context_create($options);
+	        $result = file_get_contents($url, false, $context);
+	        return json_decode($result)->success;
+	    }
+	    catch (Exception $e) {
+	        return null;
+	    }
 	}	
 
 	public function index()
@@ -16,7 +42,14 @@ class Welcome extends CI_Controller {
 		$this->_cektoken();
 
         $data = array();
-		if($this->input->post('btnsubmit')) {
+       
+		if($this->input->post('g-recaptcha-response')) {
+			$cek = $this->_isValid();
+			if($cek < 0.3) {
+				$this->session->set_flashdata('login_notif', 'failed');
+            	$this->session->set_flashdata('login_msg', 'You are bot. You can not login.');
+				redirect('');
+			}
 			$this->load->library('form_validation');
 			$this->form_validation->set_rules('password', 'Password', 'required');
 			$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
@@ -27,6 +60,7 @@ class Welcome extends CI_Controller {
             	$this->session->set_flashdata('login_msg', validation_errors());
             	redirect('');
             } else {
+            	//$recaptcharesult = $this->input->post('g-recaptcha-response');
             	
             	$pass = trim($this->input->post('password'));
 				$email = trim($this->input->post('email'));
@@ -136,6 +170,10 @@ class Welcome extends CI_Controller {
             }
 		}
 
+		$data['js'] = "
+			console.log('tes');
+			
+		";
 		$this->load->view('v_login', $data);
 	}
 }

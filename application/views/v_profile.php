@@ -1,6 +1,7 @@
 <div class="page-content">
     <div class="card card-style" style=" padding-bottom: 20px;">
         <div class="content mb-0">                    
+            <form method="post" action="<?php echo current_url(); ?>">
             <div class="input-style has-borders has-icon validate-field mb-4">
                 <i class="fa fa-user"></i>
                 <input type="text" class="form-control validate-name" id="nama_depan" name="nama_depan" placeholder="First Name" value="<?php if(trim($profile[0]->nama_depan =='')) { echo $profile[0]->nama_customer; } else { echo $profile[0]->nama_depan; } ?>">
@@ -52,7 +53,16 @@
             <button type="submit" value="btnsubmitprofile" name="btnsubmitprofile" class="btn btn-full btn-m shadow-l rounded-s font-600 bg-blue-dark mt-4">Update Profile</button>
             
             
-
+            </form>
         </div>
     </div>
 </div>
+
+<?php if($this->session->flashdata('notif')) { ?>
+    <div id="notification-6" data-dismiss="notification-6" data-bs-delay="3000" data-bs-autohide="true" class="notification <?php if($this->session->flashdata('notif') == 'success') { ?>bg-green-dark<?php } else { ?>bg-red-dark<?php } ?> shadow-xl opacity-95">
+        <div class="toast-body color-white p-3">
+            <h1 class="ms-0 ps-0 pb-2 mt-0 color-white"><?php if($this->session->flashdata('notif') == 'success') { echo 'Success'; } else { echo 'Failed'; } ?></h1>
+            <?php echo $this->session->flashdata('notif_msg'); ?>
+        </div>
+    </div>
+<?php } ?>

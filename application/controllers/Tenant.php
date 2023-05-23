@@ -3,6 +3,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Tenant extends CI_Controller {
 
+	public function __construct() {
+        parent::__construct();
+            // Your own constructor code
+        $this->load->helper('cookie');
+		if(!$this->customermodel->check_token(get_cookie('token'), get_cookie('kode'))) {
+			redirect('');
+		}
+    }
+    
 	public function index()
 	{	
         redirect('dashboard');
@@ -10,6 +19,7 @@ class Tenant extends CI_Controller {
 
 	public function search($key) {
 		$data = array();
+		$data['js'] ='';
 		
 		$data['tenant'] = $this->eventmodel->getKodeAll(trim($key));
 		if(count($data['tenant']) == 0) {
@@ -20,11 +30,36 @@ class Tenant extends CI_Controller {
 			$data['events'] = $this->eventmodel->getAllEvent($data['tenant'][0]->event_id);
 		}
 
+		if($this->input->post('btncollect')) {
+			if($this->eventmodel->collectVoucher($data['tenant'][0]->event_id, get_cookie('kode'), $data['tenant'][0]->tenant_id)) {
+				$this->session->set_flashdata('notif', 'success');
+            	$this->session->set_flashdata('notif_msg', 'The voucher has been successfully collected.');
+            	
+			} else {
+				$this->session->set_flashdata('notif', 'failed');
+            	$this->session->set_flashdata('notif_msg', 'Sorry, you have not been able to get a voucher at this time. Try again on another tenant.');
+			}
+			redirect('tenant/'.$key);
+		}
+
 		$data['judul'] = 'Tenant Detail';
 		$data['master_path'] = $this->config->item('master_url');
 		$data['events'] = $this->eventmodel->getAllEvent('', array('is_aktif' => 1));
 
-		$data['js'] = "$('#btnscan').on('click', function() {
+		// cek voucher eligibility
+		$data['eligible'] = $this->eventmodel->checkVoucherEligibility($data['tenant'][0]->event_id, $data['tenant'][0]->tenant_id, get_cookie('kode'));
+
+		if($this->session->flashdata('notif')) {
+            $data['js'] .= "
+            var toastID = document.getElementById('notification-6');
+            toastID = new bootstrap.Toast(toastID);
+            toastID.show(); 
+            ";
+        }
+
+        $data['unreadvoucher'] = $this->eventmodel->getUnreadVoucher(get_cookie('kode'));
+
+		$data['js'] .= "$('#btnscan').on('click', function() {
                 console.log('read');
                
                 console.log('show');

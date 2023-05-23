@@ -61,6 +61,7 @@
     function update_data($kode_customer, $data) {
         $this->db->where('kode_customer', $kode_customer);
         $this->db->update('mst_customer', $data);
+        
     }
 
     function check_token($token, $kode_customer) {

@@ -5,7 +5,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
-<title>AppKit Mobile</title>
+<title>Willow Baby & Kids Event</title>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url('styles/bootstrap.css'); ?>">
 <link rel="stylesheet" type="text/css" href="<?php echo base_url('styles/style.css'); ?>">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -30,7 +30,7 @@
 
         <div class="card card-style">
             <div class="content">
-                <form method="post" action="<?php echo current_url(); ?>">
+                <form method="post" action="<?php echo current_url(); ?>" id="login-form">
                     <div class="text-center">
                         <img src="<?php echo base_url('images/wil_clean.png'); ?>" />
                     </div>
@@ -56,22 +56,25 @@
                         <em>(required)</em>
                     </div>
 
-                    <button type="submit" value="submit" name="btnsubmit" class="btn btn-full btn-l font-600 font-13 gradient-highlight mt-4 rounded-s">Sign In</button>
+                    <button type="submit" value="submit" name="btnsubmit" class="g-recaptcha btn btn-full btn-l font-600 font-13 gradient-highlight mt-4 rounded-s" 
+        data-sitekey="6Lev44gdAAAAAJumDdmb7jXVTx-ww0cxAXiFyl26" 
+        data-callback='onSubmit' 
+        data-action='submit'>Sign In</button>
                     
                     <div class="row pt-3 mb-3">
                         <div class="col-6 text-start">
                             <a href="#" data-menu="menu-forgot" class="color-highlight">Forgot Password?</a>
                         </div>
-                        <div class="col-6 text-end">
+                        <!--<div class="col-6 text-end">
                             <a href="#" data-menu="menu-signup" class="color-highlight" >Create Account</a>
-                        </div>
+                        </div>-->
                     </div>
                     
-                    <div class="divider"></div>
+                    <!--<div class="divider"></div>
                     
                     <a href="#" class="btn btn-icon text-start btn-full btn-l font-600 font-13 bg-facebook mt-4 rounded-s"><i class="fab fa-facebook-f text-center"></i>Sign In with Facebook</a>
                     <a href="#" class="btn btn-icon text-start btn-full btn-l font-600 font-13 bg-twitter mt-2 rounded-s"><i class="fab fa-twitter text-center"></i>Sign In with Twitter</a>
-                    <a href="#" class="btn btn-icon text-start btn-full btn-l font-600 font-13 bg-dark-dark mt-2 rounded-s"><i class="fab fa-apple text-center"></i>Sign In with Apple</a>
+                    <a href="#" class="btn btn-icon text-start btn-full btn-l font-600 font-13 bg-dark-dark mt-2 rounded-s"><i class="fab fa-apple text-center"></i>Sign In with Apple</a>-->
                 </form>
             </div>
         </div>
@@ -140,7 +143,7 @@
          class="menu menu-box-modal rounded-m" 
          data-menu-height="220" 
          data-menu-width="350">
-         <form method="post" action="<?php echo current_url(); ?>">
+         <form method="post" action="<?php echo current_url(); ?>" >
             <div class="menu-title">
                 <p class="color-highlight">This action will change your password with a new one</p>
                 <h1 class="font-24">Reset Password</h1>
@@ -156,7 +159,7 @@
                     <i class="fa fa-check disabled valid color-green-dark"></i>
                     <em>(required)</em>
                 </div>
-                <button type="submit" value="btnsubmitforgotpass" name="btnsubmitforgotpass" class="btn btn-full btn-m shadow-l rounded-s bg-highlight font-600 mt-4">CHANGE MY PASSWORD</button>
+                <button type="submit" value="btnsubmitforgotpass" name="btnsubmitforgotpass" class="btn btn-full btn-m shadow-l rounded-s bg-highlight font-600 mt-4 " >CHANGE MY PASSWORD</button>
             </div>
         </form>
     </div> 
@@ -165,6 +168,23 @@
     
 </div>
 
+<script src="https://www.google.com/recaptcha/api.js"></script>
+
+ 
+<script type="text/javascript" src="<?php echo base_url('scripts/jquery.min.js'); ?>"></script>
 <script type="text/javascript" src="<?php echo base_url('scripts/bootstrap.min.js'); ?>"></script>
 <script type="text/javascript" src="<?php echo base_url('scripts/custom.js'); ?>"></script>
+<script type="text/javascript" defer>
+    function onSubmit(token) {
+                 document.getElementById("login-form").submit();
+             }
+
+    $( document ).ready(function() {
+        setTimeout(function(){
+    <?php if(isset($js)) { echo $js; } ?>
+        },150);
+        
+    });
+</script>
+
 </body>

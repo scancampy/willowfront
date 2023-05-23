@@ -28,6 +28,7 @@
 
 <script type="text/javascript" src="<?php echo base_url('scripts/html5-qrcode.min.js'); ?>"></script>
 <script type="text/javascript" src="<?php echo base_url('scripts/bootstrap.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('plugins/slideunlock/jquery.slideToUnlock.js'); ?>"></script>
 <script type="text/javascript" src="<?php echo base_url('scripts/custom.js'); ?>"></script>
 
 <script type="text/javascript" defer>
